@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".UserFragment"
+    style="@style/MatchMatchStyle">
+
+    <ScrollView
+        style="@style/MatchMatchStyle">
+
+    <LinearLayout
+        android:orientation="vertical"
+        style="@style/WMatchHWrapStyle">
+        <LinearLayout
+            style="@style/WMatchHWrapStyle">
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/zero_dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                tools:src="@drawable/ic_sentiment_very_satisfied"
+                android:layout_margin="@dimen/ten_dp"/>
+
+            <LinearLayout
+                android:layout_width="@dimen/zero_dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:text="@string/bioString"
+                    style="@style/TextTitleStyle" />
+                <TextView
+                    android:id="@+id/bio_text_view"
+                    tools:text="@string/indication_text"
+                    style="@style/TextStyle" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:text="@string/locationTitle"
+            style="@style/TextTitleStyle"/>
+        <TextView
+            android:id="@+id/location_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            tools:text="Bucharest"
+            android:textSize="18sp"/>
+
+        <TextView
+            style="@style/TextTitleStyle"
+            android:text="@string/emailTitle"/>
+        <TextView
+            android:id="@+id/email_text-view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            tools:text="blabla@blabla.com"
+            android:textSize="18sp"/>
+
+        <TextView
+            style="@style/TextTitleStyle"
+            android:text="@string/createdTitle"/>
+        <TextView
+            android:id="@+id/created_date_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            tools:text="date"
+            android:textSize="18sp"/>
+        <TextView
+            style="@style/TextTitleStyle"
+            android:text="@string/updateTitle"/>
+        <TextView
+            android:id="@+id/update_date_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            tools:text="date"
+            android:textSize="18sp"/>
+        <TextView
+            style="@style/TextTitleStyle"
+            android:text="@string/publicReposTitle"/>
+        <TextView
+            android:id="@+id/public_repo_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            tools:text="12"
+            android:textSize="18sp"/>
+
+        <TextView
+            style="@style/TextTitleStyle"
+            android:text="@string/privateReposTitle"/>
+        <TextView
+            android:id="@+id/private_repo_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            tools:text="12"
+            android:textSize="18sp"/>
+
+        <LinearLayout
+            style="@style/WMatchHWrapStyle">
+
+            <Button
+                android:id="@+id/open_repo_button"
+                android:text="@string/viewRepositories"
+                tools:targetApi="lollipop"
+                android:drawableLeft="@drawable/ic_archive"
+                style="@style/BottomButtonStyle" />
+
+            <Button
+                android:id="@+id/email_button"
+                style="@style/BottomButtonStyle"
+                android:drawableRight="@drawable/ic_mail"
+                android:text="@string/contact_by_email"
+                android:focusableInTouchMode="true"
+                tools:targetApi="lollipop"
+                android:background="@android:color/transparent"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

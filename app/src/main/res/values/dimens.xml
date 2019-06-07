@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="one_hundred_dp">100dp</dimen>
+    <dimen name="eight_dp">8dp</dimen>
+    <dimen name="twenty_dp">20dp</dimen>
+    <dimen name="zero_dp">0dp</dimen>
+    <dimen name="ten_dp">10dp</dimen>
+    <dimen name="text_title_size">18sp</dimen>
+    <dimen name="text_size_sp">16sp</dimen>
+    <dimen name="twelve_dp">12dp</dimen>
+</resources>

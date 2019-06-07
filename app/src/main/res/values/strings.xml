@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">GitHubTrainingAppJava</string>
+    <string name="username_string">Email address</string>
+    <string name="password_string">Password</string>
+    <string name="login_string">Login</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bioString">Bio</string>
+    <string name="indication_text">Here will be the owner\'s bio</string>
+    <string name="locationTitle">Location</string>
+    <string name="emailTitle">Email</string>
+    <string name="createdTitle">Account created at:</string>
+    <string name="updateTitle">Last update:</string>
+    <string name="publicReposTitle">Public repos</string>
+    <string name="privateReposTitle">Private repos</string>
+    <string name="viewRepositories">View Repositories</string>
+    <string name="contact_by_email">Contact by email</string>
+</resources>
