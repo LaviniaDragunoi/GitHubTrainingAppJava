@@ -9,5 +9,11 @@
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="@dimen/one_hundred_dp"
+        android:layout_height="@dimen/one_hundred_dp" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

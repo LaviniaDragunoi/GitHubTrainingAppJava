@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.githubtrainingappjava.data.ApiClient;
@@ -16,6 +17,7 @@ import com.example.githubtrainingappjava.data.ApiInterface;
 import com.example.githubtrainingappjava.models.GitHubRepo;
 import com.example.githubtrainingappjava.models.Owner;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,10 +26,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class LoginActivity extends AppCompatActivity {
 
     public static final String OWNER_DATA = "ownerResponse";
     public static final String AUTHHEADER = "authheather" ;
+    private static final String USERNAME = "username";
+    private static final String USERS_PASSWORD = "password";
     @BindView(R.id.editTextUsername)
     EditText usernameEditText;
     @BindView(R.id.editTextpassword)
@@ -44,18 +49,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+               if(savedInstanceState != null){
+            username = savedInstanceState.getString(USERNAME);
+            password = savedInstanceState.getString(USERS_PASSWORD);
+            usernameEditText.setText(username);
+            passwordEditText.setText(password);
+        }
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                usernameEditText.setVisibility(View.GONE);
-                passwordEditText.setVisibility(View.GONE);
-                githubIcon.setVisibility(View.GONE);
-                loginButton.setVisibility(View.GONE);
                 loadUser();
-
-
 
             }
         });
@@ -66,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
        username = usernameEditText.getText().toString();
        password = passwordEditText.getText().toString();
-
         String base = username + ":" + password;
         final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
 
@@ -80,18 +83,30 @@ public class LoginActivity extends AppCompatActivity {
                     intent.putExtra(OWNER_DATA, ownerResponse);
                     intent.putExtra(AUTHHEADER, authHeader);
                     startActivity(intent);
+                }else {
+                    Toast.makeText(LoginActivity.this, R.string.wrong_credential, Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<Owner> call, Throwable t) {
-                Log.d("asdfs","onFailure");
-                Log.d("asdfs",t.getMessage());
-                Log.d("asdfs",t.getLocalizedMessage());
-                Toast.makeText(LoginActivity.this, "it's not a succes", Toast.LENGTH_SHORT).show();
+             if(t instanceof IOException){
+                 Toast.makeText(LoginActivity.this, R.string.no_connection_message, Toast.LENGTH_SHORT).show();
+             }
+
             }
         });
 
 
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(USERNAME, username);
+        outState.putString(USERS_PASSWORD, password);
+    }
+
+
 }

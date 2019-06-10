@@ -16,4 +16,10 @@
     <string name="privateReposTitle">Private repos</string>
     <string name="viewRepositories">View Repositories</string>
     <string name="contact_by_email">Contact by email</string>
+    <string name="locationString">Bucharest</string>
+    <string name="emailString">blabla@blabla.com</string>
+    <string name="dateString">date</string>
+    <string name="numberString">No</string>
+    <string name="no_connection_message">There seems to be a problem with your Internet connection.</string>
+    <string name="wrong_credential">Check your email or password!</string>
 </resources>

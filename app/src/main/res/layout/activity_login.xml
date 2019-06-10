@@ -28,6 +28,7 @@
     <EditText
         android:id="@+id/editTextpassword"
         style="@style/EditTextStyle"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="@string/password_string"
         android:inputType="textPassword"
@@ -38,10 +39,12 @@
 
     <Button
         android:id="@+id/loginButton"
+        style="@style/LoginButtonStyle"
+        android:layout_marginTop="20dp"
         android:text="@string/login_string"
         app:layout_constraintEnd_toEndOf="@+id/editTextpassword"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="@+id/editTextpassword"
-        app:layout_constraintTop_toBottomOf="@+id/editTextpassword"
-        style="@style/LoginButtonStyle" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextpassword" />
+
 </android.support.constraint.ConstraintLayout>
