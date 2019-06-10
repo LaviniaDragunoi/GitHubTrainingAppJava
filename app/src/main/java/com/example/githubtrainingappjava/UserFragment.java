@@ -1,10 +1,14 @@
 package com.example.githubtrainingappjava;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +23,7 @@ import com.example.githubtrainingappjava.models.GitHubRepo;
 import com.example.githubtrainingappjava.models.Owner;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -57,6 +62,8 @@ public class UserFragment extends Fragment {
     Button emailButton;
     private Owner owner;
     private String authHeader;
+    public static final String REPOSLIST = "reposList";
+
 
     public UserFragment() {
         // Required empty public constructor
@@ -112,12 +119,19 @@ public class UserFragment extends Fragment {
 
     private void loadRepos() {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<GitHubRepo>> call = apiInterface.listRepos(authHeader);
+        Call<List<GitHubRepo>> call = apiInterface.getRepos(authHeader);
         call.enqueue(new Callback<List<GitHubRepo>>() {
             @Override
             public void onResponse(Call<List<GitHubRepo>> call, Response<List<GitHubRepo>> response) {
 
-                Toast.makeText(getContext(), "It is a succes", Toast.LENGTH_SHORT).show();
+                    List<GitHubRepo> gitHubRepoList = response.body();
+                    Bundle bundle = new Bundle();
+                ReposFragment reposFragment = new ReposFragment();
+               bundle.putParcelableArrayList(REPOSLIST, new ArrayList<>(gitHubRepoList));
+               reposFragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+               fragmentTransaction.replace(R.id.main_container, reposFragment)
+               .commit();
             }
 
             @Override
@@ -126,5 +140,6 @@ public class UserFragment extends Fragment {
             }
         });
     }
+
 
 }
