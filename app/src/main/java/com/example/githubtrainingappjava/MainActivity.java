@@ -2,6 +2,7 @@ package com.example.githubtrainingappjava;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import com.example.githubtrainingappjava.models.GitHubRepo;
 import com.example.githubtrainingappjava.models.Owner;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,10 +39,9 @@ import static com.example.githubtrainingappjava.LoginActivity.OWNER_DATA;
 
 public class MainActivity extends AppCompatActivity {
 
+
     private Owner owner;
     private String authHeader;
-
-
 
 
     @Override
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .add(R.id.main_container, userFragment)
                 .commit();
-
 
 
     }

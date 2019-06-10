@@ -68,19 +68,14 @@ public class LoginActivity extends AppCompatActivity {
        password = passwordEditText.getText().toString();
 
         String base = username + ":" + password;
-      final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
+        final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
 
         Call<Owner> call = apiInterface.getOwner(authHeader);
         call.enqueue(new Callback<Owner>() {
             @Override
             public void onResponse(Call<Owner> call, Response<Owner> response) {
                 if (response.isSuccessful()) {
-                    Log.d("asdfs","isSuccessful");
-                    Log.d("asdfs","isSuccessful " + response.body().getAvatarUrl());
-
-
                     Owner ownerResponse = response.body();
-
                     Intent intent =  new Intent (LoginActivity.this, MainActivity.class);
                     intent.putExtra(OWNER_DATA, ownerResponse);
                     intent.putExtra(AUTHHEADER, authHeader);
