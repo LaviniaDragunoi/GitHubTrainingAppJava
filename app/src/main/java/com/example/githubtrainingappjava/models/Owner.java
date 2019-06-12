@@ -1,15 +1,19 @@
 package com.example.githubtrainingappjava.models;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+@Entity(tableName = "owner_table")
 public class Owner implements Parcelable {
         @SerializedName("login")
         @Expose
         private String login;
+
+       @PrimaryKey(autoGenerate = true)
         @SerializedName("id")
         @Expose
         private Integer id;

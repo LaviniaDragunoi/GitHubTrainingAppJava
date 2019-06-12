@@ -23,6 +23,7 @@ import com.example.githubtrainingappjava.models.GitHubRepo;
 import com.example.githubtrainingappjava.models.Owner;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,8 +92,8 @@ public class UserFragment extends Fragment {
         bioTV.setText(owner.getBio());
         locationTv.setText(owner.getLocation());
         emailTV.setText(owner.getEmail());
-        createdTV.setText(owner.getCreatedAt());
-        updateTV.setText(owner.getUpdatedAt());
+        createdTV.setText(formatDate(owner.getCreatedAt()));
+        updateTV.setText(formatDate(owner.getUpdatedAt()));
         publicRepoTV.setText(owner.getPublicRepos().toString());
         privateRepoTV.setText(owner.getTotalPrivateRepos().toString());
         openRepoButton.setOnClickListener(new View.OnClickListener() {
@@ -136,10 +137,15 @@ public class UserFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<GitHubRepo>> call, Throwable t) {
-                Toast.makeText(getContext(), "It is not a succes", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "It is not a success", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
+    public static String formatDate(String oldFormat){
+       String date = oldFormat.substring(0,10);
+       String time = oldFormat.substring(11,16);
+       return date + "  " + time;
+    }
 }

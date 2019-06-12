@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.githubtrainingappjava.R;
+import com.example.githubtrainingappjava.UserFragment;
 
 import java.util.List;
 
@@ -44,8 +45,8 @@ public RepoAdapter(Context context, List<GitHubRepo> gitHubRepos){
     }else {
         holder.repoPrivacy.setText("Public");
     }
-    holder.repoCreatedAt.setText(repo.getCreatedAt());
-    holder.repoUpdatedAt.setText(repo.getUpdatedAt());
+    holder.repoCreatedAt.setText(UserFragment.formatDate(repo.getCreatedAt()));
+    holder.repoUpdatedAt.setText(UserFragment.formatDate(repo.getUpdatedAt()));
 
     }
 

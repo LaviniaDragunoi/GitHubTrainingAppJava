@@ -4,6 +4,7 @@ package com.example.githubtrainingappjava;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -17,6 +18,7 @@ import com.example.githubtrainingappjava.models.GitHubRepo;
 import com.example.githubtrainingappjava.models.RepoAdapter;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,12 +41,12 @@ private Context context;
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_repos, container, false);
         ButterKnife.bind(this, view);
-        getActivity().setTitle(getString(R.string.repositories_list_title));
+        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.repositories_list_title));
         Bundle bundle = getArguments();
         if(bundle != null){
             reposList = bundle.getParcelableArrayList(REPOSLIST);
@@ -54,7 +56,7 @@ private Context context;
         repoRecycler.setLayoutManager(layoutManager);
         DividerItemDecoration itemDecoration = new DividerItemDecoration(repoRecycler.getContext(), DividerItemDecoration.VERTICAL);
         Drawable separator = ContextCompat.getDrawable(getActivity(), R.drawable.item_separator);
-        itemDecoration.setDrawable(separator);
+        itemDecoration.setDrawable(Objects.requireNonNull(separator));
         repoRecycler.addItemDecoration(itemDecoration);
         repoRecycler.setAdapter(new RepoAdapter(getContext(), reposList));
         return view;
