@@ -22,4 +22,8 @@
     <string name="numberString">No</string>
     <string name="no_connection_message">There seems to be a problem with your Internet connection.</string>
     <string name="wrong_credential">Check your email or password!</string>
+    <string name="repository_s_name">Repository\'s name:</string>
+    <string name="repositories_list_title">Repositories list</string>
+    <string name="created_title">Created:</string>
+    <string name="updated_title">Updated:</string>
 </resources>

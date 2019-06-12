@@ -2,8 +2,10 @@ package com.example.githubtrainingappjava;
 
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +44,7 @@ private Context context;
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_repos, container, false);
         ButterKnife.bind(this, view);
+        getActivity().setTitle(getString(R.string.repositories_list_title));
         Bundle bundle = getArguments();
         if(bundle != null){
             reposList = bundle.getParcelableArrayList(REPOSLIST);
@@ -49,6 +52,10 @@ private Context context;
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         repoRecycler.setLayoutManager(layoutManager);
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(repoRecycler.getContext(), DividerItemDecoration.VERTICAL);
+        Drawable separator = ContextCompat.getDrawable(getActivity(), R.drawable.item_separator);
+        itemDecoration.setDrawable(separator);
+        repoRecycler.addItemDecoration(itemDecoration);
         repoRecycler.setAdapter(new RepoAdapter(getContext(), reposList));
         return view;
     }
