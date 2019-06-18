@@ -7,7 +7,6 @@ import android.content.Context;
 
 import com.example.githubtrainingappjava.models.GitHubRepo;
 import com.example.githubtrainingappjava.models.Owner;
-import com.example.githubtrainingappjava.models.Plan;
 
 @Database(entities = {GitHubRepo.class, Owner.class}, version = 1, exportSchema = false)
 public abstract class AppRoomDatabase extends RoomDatabase {

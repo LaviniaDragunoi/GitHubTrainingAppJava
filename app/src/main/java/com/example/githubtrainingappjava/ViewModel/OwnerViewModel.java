@@ -31,6 +31,6 @@ public OwnerViewModel (Repository repository, String auth){
     }
 
     public LiveData<List<GitHubRepo>> getReposLiveData() {
-        return mRepository.getRetrofitReposResult(mAuth);
+        return mRepository.getReposFromDb();
     }
 }
