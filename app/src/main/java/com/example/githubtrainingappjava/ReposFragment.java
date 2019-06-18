@@ -11,6 +11,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -51,7 +54,6 @@ private Context context;
         if(bundle != null){
             reposList = bundle.getParcelableArrayList(REPOSLIST);
         }
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         repoRecycler.setLayoutManager(layoutManager);
         DividerItemDecoration itemDecoration = new DividerItemDecoration(repoRecycler.getContext(), DividerItemDecoration.VERTICAL);
@@ -61,5 +63,6 @@ private Context context;
         repoRecycler.setAdapter(new RepoAdapter(getContext(), reposList));
         return view;
     }
+
 
 }

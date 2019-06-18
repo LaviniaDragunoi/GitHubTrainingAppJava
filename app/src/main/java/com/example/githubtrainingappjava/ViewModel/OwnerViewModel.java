@@ -33,4 +33,9 @@ public OwnerViewModel (Repository repository, String auth){
     public LiveData<List<GitHubRepo>> getReposLiveData() {
         return mRepository.getReposFromDb();
     }
+
+    public void deleteDatabase(){
+    mRepository.deleteOwnerFromDb();
+    mRepository.deleteRepoFromDb();
+    }
 }

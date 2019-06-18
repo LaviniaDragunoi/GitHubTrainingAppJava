@@ -3,6 +3,7 @@ package com.example.githubtrainingappjava;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -45,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.loginButton)
     Button loginButton;
     @BindView(R.id.githubOctocatIcon)
-    ImageView githubIcon;
+    ImageView githubIcon;;
     private String username;
     private String password;
 
@@ -61,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             passwordEditText.setText(password);
         }
 
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,12 +73,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     private void loadUser() {
-
         AppRoomDatabase appRoomDatabase = AppRoomDatabase.getsInstance(this);
        AppExecutors appExecutors =AppExecutors.getInstance();
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-      username = usernameEditText.getText().toString();
-      password = passwordEditText.getText().toString();
+        username = usernameEditText.getText().toString();
+
+         password = passwordEditText.getText().toString();
 
         String base = username + ":" + password;
         final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
@@ -92,8 +94,6 @@ public class LoginActivity extends AppCompatActivity {
                   intent.putExtra(OWNER_DATA, owner);
                    intent.putExtra(AUTHHEADER, authHeader);
                    startActivity(intent);
-            }else {
-                Toast.makeText(LoginActivity.this, R.string.wrong_credential, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -106,6 +106,5 @@ public class LoginActivity extends AppCompatActivity {
         outState.putString(USERNAME, username);
         outState.putString(USERS_PASSWORD, password);
     }
-
 
 }

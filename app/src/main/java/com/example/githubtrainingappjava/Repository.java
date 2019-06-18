@@ -96,7 +96,7 @@ public class Repository {
         if(ownerLiveData != null){
 
             mAppExecutors.networkIO().execute(() ->{
-                deleteDb();
+                deleteOwnerFromDb();
                 mOwnerDao.insertOwner(ownerLiveData);
 
             });
@@ -113,17 +113,13 @@ private void addReposToDb(List<GitHubRepo> repoList){
         }
 }
     //Clean up the database owner_table
-    private void deleteOwnerFromDb() {
+    public void deleteOwnerFromDb() {
         mOwnerDao.deleteOwner();
     }
-    //Clean up the database github_table
-    private void deleteRepoFromDb() {
-        mOwnerDao.deleteRepos();
-    }
 
-    //Clean up the database
-    private void deleteDb(){
-        mOwnerDao.deleteAll();
+    //Clean up the database github_table
+    public void deleteRepoFromDb() {
+        mOwnerDao.deleteRepos();
     }
 
     public LiveData<Owner> getOwnerFromDb(){
