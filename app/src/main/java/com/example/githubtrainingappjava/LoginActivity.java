@@ -75,14 +75,16 @@ public class LoginActivity extends AppCompatActivity {
         AppRoomDatabase appRoomDatabase = AppRoomDatabase.getsInstance(this);
        AppExecutors appExecutors =AppExecutors.getInstance();
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-       username = usernameEditText.getText().toString();
-       password = passwordEditText.getText().toString();
+      username = usernameEditText.getText().toString();
+      password = passwordEditText.getText().toString();
+
         String base = username + ":" + password;
         final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
         Repository repository = Repository.getsInstance(appExecutors,appRoomDatabase,
                 appRoomDatabase.ownerDao(), apiInterface);
         OwnerViewModelFactory ownerViewModelFactory = new OwnerViewModelFactory(repository,authHeader);
         OwnerViewModel ownerViewModel = ViewModelProviders.of(this, ownerViewModelFactory).get(OwnerViewModel.class);
+
         ownerViewModel.getOwnerLiveData().observe(this, owner -> {
 
             if( owner != null){
@@ -90,33 +92,10 @@ public class LoginActivity extends AppCompatActivity {
                   intent.putExtra(OWNER_DATA, owner);
                    intent.putExtra(AUTHHEADER, authHeader);
                    startActivity(intent);
-            }else Toast.makeText(LoginActivity.this, R.string.wrong_credential, Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(LoginActivity.this, R.string.wrong_credential, Toast.LENGTH_SHORT).show();
+            }
         });
-
-//        Call<Owner> call = apiInterface.getOwner(authHeader);
-//        call.enqueue(new Callback<Owner>() {
-//            @Override
-//            public void onResponse(Call<Owner> call, Response<Owner> response) {
-//                if (response.isSuccessful()) {
-//                    Owner ownerResponse = response.body();
-//                    Intent intent =  new Intent (LoginActivity.this, MainActivity.class);
-//                    intent.putExtra(OWNER_DATA, ownerResponse);
-//                    intent.putExtra(AUTHHEADER, authHeader);
-//                    startActivity(intent);
-//                }else {
-//                    Toast.makeText(LoginActivity.this, R.string.wrong_credential, Toast.LENGTH_SHORT).show();
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Owner> call, Throwable t) {
-//             if(t instanceof IOException){
-//                 Toast.makeText(LoginActivity.this, R.string.no_connection_message, Toast.LENGTH_SHORT).show();
-//             }
-//
-//            }
-//        });
 
 
     }

@@ -1,6 +1,5 @@
 package com.example.githubtrainingappjava;
 
-import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
@@ -45,14 +44,7 @@ public class Repository {
         return sInstance;
     }
 
-    public LiveData<Owner> getOwnerLiveData(String auth){
-        LiveData<Owner> ownerLiveData = getRetrofitOwnerResult(auth);
-        if(ownerLiveData != null){
-            addOwnerToDB(ownerLiveData);
-        }
 
-        return mOwnerDao.getOwnerDetails();
-    }
 
     public LiveData<Owner> getRetrofitOwnerResult(String auth){
         final MutableLiveData<Owner> ownerResponse = new MutableLiveData<>();
@@ -60,7 +52,9 @@ public class Repository {
             @Override
             public void onResponse(Call<Owner> call, Response<Owner> response) {
                 if (response.isSuccessful()) {
+
                     ownerResponse.setValue(response.body());
+                    addOwnerToDB(response.body());
                 } else {
                     ownerResponse.setValue(null);
                 }
@@ -68,6 +62,7 @@ public class Repository {
 
             @Override
             public void onFailure(Call<Owner> call, Throwable t) {
+
                 ownerResponse.setValue(null);
             }
         });
@@ -82,6 +77,7 @@ public class Repository {
             public void onResponse(Call<List<GitHubRepo>> call, Response<List<GitHubRepo>> response) {
                 if (response.isSuccessful()) {
                     reposResponse.setValue(response.body());
+                    addReposToDb(response.body());
                 } else {
                     reposResponse.setValue(null);
                 }
@@ -96,22 +92,22 @@ public class Repository {
         return reposResponse;
     }
 
-    public void addOwnerToDB(LiveData<Owner> ownerLiveData){
-        if(ownerLiveData.getValue() != null){
+    private void addOwnerToDB(Owner ownerLiveData){
+        if(ownerLiveData != null){
 
             mAppExecutors.networkIO().execute(() ->{
-              //  deleteDb();
-                mOwnerDao.insertOwner(ownerLiveData.getValue());
+                deleteDb();
+                mOwnerDao.insertOwner(ownerLiveData);
 
             });
         }
     }
 
-public void addReposToDb(LiveData<List<GitHubRepo>> repoLiveData){
-        if(repoLiveData.getValue() != null){
+private void addReposToDb(List<GitHubRepo> repoList){
+        if(repoList != null){
             mAppExecutors.networkIO().execute(() ->{
                 deleteRepoFromDb();
-                mOwnerDao.insertRepoList(repoLiveData.getValue());
+                mOwnerDao.insertRepoList(repoList);
 
             });
         }
@@ -130,4 +126,11 @@ public void addReposToDb(LiveData<List<GitHubRepo>> repoLiveData){
         mOwnerDao.deleteAll();
     }
 
+    public LiveData<Owner> getOwnerFromDb(){
+        return mOwnerDao.getOwnerDetails();
+    }
+
+    public LiveData<List<GitHubRepo>> getReposFromDb(){
+        return mOwnerDao.getRepos();
+    }
 }

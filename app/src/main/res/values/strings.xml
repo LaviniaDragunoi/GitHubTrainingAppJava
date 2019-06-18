@@ -26,4 +26,6 @@
     <string name="repositories_list_title">Repositories list</string>
     <string name="created_title">Created:</string>
     <string name="updated_title">Updated:</string>
+    <string name="logout">Logout</string>
+
 </resources>

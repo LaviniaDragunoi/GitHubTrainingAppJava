@@ -28,6 +28,6 @@ public abstract class AppRoomDatabase extends RoomDatabase {
     }
 
     public abstract OwnerDao ownerDao();
-    public abstract GitHubRepoDao gitHubRepoDao();
+
 
 }

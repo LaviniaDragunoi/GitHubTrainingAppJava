@@ -1,6 +1,7 @@
 package com.example.githubtrainingappjava;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,8 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.githubtrainingappjava.ViewModel.OwnerViewModel;
+import com.example.githubtrainingappjava.ViewModel.OwnerViewModelFactory;
 import com.example.githubtrainingappjava.data.ApiClient;
 import com.example.githubtrainingappjava.data.ApiInterface;
+import com.example.githubtrainingappjava.database.AppRoomDatabase;
 import com.example.githubtrainingappjava.models.GitHubRepo;
 import com.example.githubtrainingappjava.models.Owner;
 import com.squareup.picasso.Picasso;
@@ -119,27 +123,25 @@ public class UserFragment extends Fragment {
     }
 
     private void loadRepos() {
+        AppRoomDatabase appRoomDatabase = AppRoomDatabase.getsInstance(getContext());
+        AppExecutors appExecutors =AppExecutors.getInstance();
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<GitHubRepo>> call = apiInterface.getRepos(authHeader);
-        call.enqueue(new Callback<List<GitHubRepo>>() {
-            @Override
-            public void onResponse(Call<List<GitHubRepo>> call, Response<List<GitHubRepo>> response) {
-
-                    List<GitHubRepo> gitHubRepoList = response.body();
-                    Bundle bundle = new Bundle();
+        Repository repository = Repository.getsInstance(appExecutors,appRoomDatabase,
+                appRoomDatabase.ownerDao(), apiInterface);
+        OwnerViewModelFactory ownerViewModelFactory = new OwnerViewModelFactory(repository,authHeader);
+        OwnerViewModel ownerViewModel = ViewModelProviders.of(this, ownerViewModelFactory).get(OwnerViewModel.class);
+        ownerViewModel.getReposLiveData().observe(this, gitHubRepos -> {
+            if(gitHubRepos != null & gitHubRepos.size() != 0) {
+                Bundle bundle = new Bundle();
                 ReposFragment reposFragment = new ReposFragment();
-               bundle.putParcelableArrayList(REPOSLIST, new ArrayList<>(gitHubRepoList));
-               reposFragment.setArguments(bundle);
+                bundle.putParcelableArrayList(REPOSLIST, new ArrayList<>(gitHubRepos));
+                reposFragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-               fragmentTransaction.replace(R.id.main_container, reposFragment)
-               .commit();
-            }
-
-            @Override
-            public void onFailure(Call<List<GitHubRepo>> call, Throwable t) {
-                Toast.makeText(getContext(), "It is not a success", Toast.LENGTH_SHORT).show();
+                fragmentTransaction.replace(R.id.main_container, reposFragment)
+                        .commit();
             }
         });
+
     }
 
 
