@@ -9,7 +9,7 @@ import com.example.githubtrainingappjava.models.GitHubRepo;
 import com.example.githubtrainingappjava.models.Owner;
 import com.example.githubtrainingappjava.models.Plan;
 
-@Database(entities = {GitHubRepo.class, Owner.class, Plan.class}, version = 1, exportSchema = true)
+@Database(entities = {GitHubRepo.class, Owner.class}, version = 1, exportSchema = false)
 public abstract class AppRoomDatabase extends RoomDatabase {
 
     public static final String DATABASE_NAME = "github.table.db";
@@ -29,5 +29,5 @@ public abstract class AppRoomDatabase extends RoomDatabase {
 
     public abstract OwnerDao ownerDao();
     public abstract GitHubRepoDao gitHubRepoDao();
-    public abstract PlanDao planDao();
+
 }

@@ -9,7 +9,11 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "owner_table")
 public class Owner implements Parcelable {
-        @SerializedName("login")
+    public Owner() {
+        super();
+    }
+
+    @SerializedName("login")
         @Expose
         private String login;
 
@@ -122,9 +126,9 @@ public class Owner implements Parcelable {
         @SerializedName("two_factor_authentication")
         @Expose
         private Boolean twoFactorAuthentication;
-        @SerializedName("plan")
-        @Expose
-        private Plan plan;
+//        @SerializedName("plan")
+//        @Expose
+//        private Plan plan;
 
     protected Owner(Parcel in) {
         login = in.readString();
@@ -517,13 +521,13 @@ public class Owner implements Parcelable {
             this.twoFactorAuthentication = twoFactorAuthentication;
         }
 
-        public Plan getPlan() {
-            return plan;
-        }
-
-        public void setPlan(Plan plan) {
-            this.plan = plan;
-        }
+//        public Plan getPlan() {
+//            return plan;
+//        }
+//
+//        public void setPlan(Plan plan) {
+//            this.plan = plan;
+//        }
 
     @Override
     public int describeContents() {

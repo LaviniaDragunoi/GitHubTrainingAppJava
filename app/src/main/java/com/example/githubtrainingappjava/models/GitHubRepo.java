@@ -11,6 +11,9 @@ import com.google.gson.annotations.SerializedName;
 import java.security.Permissions;
 @Entity(tableName = "gitHubRepo_table")
 public class GitHubRepo implements Parcelable {
+    public GitHubRepo() {
+        super();
+    }
 
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
@@ -28,9 +31,9 @@ public class GitHubRepo implements Parcelable {
     @SerializedName("private")
     @Expose
     private Boolean _private;
-    @SerializedName("owner")
-    @Expose
-    private Owner owner;
+//    @SerializedName("owner")
+//    @Expose
+//    private Owner owner;
     @SerializedName("html_url")
     @Expose
     private String htmlUrl;
@@ -205,9 +208,9 @@ public class GitHubRepo implements Parcelable {
     @SerializedName("forks_count")
     @Expose
     private Integer forksCount;
-    @SerializedName("mirror_url")
-    @Expose
-    private Object mirrorUrl;
+//    @SerializedName("mirror_url")
+//    @Expose
+//    private Object mirrorUrl;
     @SerializedName("archived")
     @Expose
     private Boolean archived;
@@ -217,9 +220,9 @@ public class GitHubRepo implements Parcelable {
     @SerializedName("open_issues_count")
     @Expose
     private Integer openIssuesCount;
-    @SerializedName("license")
-    @Expose
-    private Object license;
+//    @SerializedName("license")
+//    @Expose
+//    private Object license;
     @SerializedName("forks")
     @Expose
     private Integer forks;
@@ -232,9 +235,9 @@ public class GitHubRepo implements Parcelable {
     @SerializedName("default_branch")
     @Expose
     private String defaultBranch;
-    @SerializedName("permissions")
-    @Expose
-    private Permissions permissions;
+//    @SerializedName("permissions")
+//    @Expose
+//    private Permissions permissions;
 
     protected GitHubRepo(Parcel in) {
         if (in.readByte() == 0) {
@@ -247,7 +250,7 @@ public class GitHubRepo implements Parcelable {
         fullName = in.readString();
         byte tmp_private = in.readByte();
         _private = tmp_private == 0 ? null : tmp_private == 1;
-        owner = in.readParcelable(Owner.class.getClassLoader());
+       // owner = in.readParcelable(Owner.class.getClassLoader());
         htmlUrl = in.readString();
         description = in.readString();
         byte tmpFork = in.readByte();
@@ -407,13 +410,13 @@ public class GitHubRepo implements Parcelable {
         this._private = _private;
     }
 
-    public Owner getOwner() {
-        return owner;
-    }
+//    public Owner getOwner() {
+//        return owner;
+//    }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
+//   public void setOwner(Owner owner) {
+//        this.owner = owner;
+//    }
 
     public String getHtmlUrl() {
         return htmlUrl;
@@ -879,13 +882,13 @@ public class GitHubRepo implements Parcelable {
         this.forksCount = forksCount;
     }
 
-    public Object getMirrorUrl() {
-        return mirrorUrl;
-    }
-
-    public void setMirrorUrl(Object mirrorUrl) {
-        this.mirrorUrl = mirrorUrl;
-    }
+//    public Object getMirrorUrl() {
+//        return mirrorUrl;
+//    }
+//
+//    public void setMirrorUrl(Object mirrorUrl) {
+//        this.mirrorUrl = mirrorUrl;
+//    }
 
     public Boolean getArchived() {
         return archived;
@@ -911,13 +914,13 @@ public class GitHubRepo implements Parcelable {
         this.openIssuesCount = openIssuesCount;
     }
 
-    public Object getLicense() {
-        return license;
-    }
-
-    public void setLicense(Object license) {
-        this.license = license;
-    }
+//    public Object getLicense() {
+//        return license;
+//    }
+//
+//    public void setLicense(Object license) {
+//        this.license = license;
+//    }
 
     public Integer getForks() {
         return forks;
@@ -951,13 +954,13 @@ public class GitHubRepo implements Parcelable {
         this.defaultBranch = defaultBranch;
     }
 
-    public Permissions getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(Permissions permissions) {
-        this.permissions = permissions;
-    }
+//    public Permissions getPermissions() {
+//        return permissions;
+//    }
+//
+//    public void setPermissions(Permissions permissions) {
+//        this.permissions = permissions;
+//    }
 
     @Override
     public int describeContents() {
@@ -976,7 +979,7 @@ public class GitHubRepo implements Parcelable {
         dest.writeString(name);
         dest.writeString(fullName);
         dest.writeByte((byte) (_private == null ? 0 : _private ? 1 : 2));
-        dest.writeParcelable(owner, flags);
+       // dest.writeParcelable(owner, flags);
         dest.writeString(htmlUrl);
         dest.writeString(description);
         dest.writeByte((byte) (fork == null ? 0 : fork ? 1 : 2));
