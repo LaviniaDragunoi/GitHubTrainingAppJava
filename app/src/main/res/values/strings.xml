@@ -27,5 +27,16 @@
     <string name="created_title">Created:</string>
     <string name="updated_title">Updated:</string>
     <string name="logout">Logout</string>
-
+    <string name="sort_by_title">Sort by:</string>
+    <string name="created_date">Created</string>
+    <string name="updated_date">Updated</string>
+    <string name="pushed_date">Pushed</string>
+    <string name="full_name">Full Name</string>
+    <string name="affiliation_title">Affiliation:</string>
+    <string name="owner">Owner</string>
+    <string name="collaborator">Collaborator</string>
+    <string name="org_member">Organization Member</string>
+    <string name="github_settings">GitHub Settings</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

@@ -49,6 +49,7 @@ private Context context;
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_repos, container, false);
         ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
         Objects.requireNonNull(getActivity()).setTitle(getString(R.string.repositories_list_title));
         Bundle bundle = getArguments();
         if(bundle != null){

@@ -126,7 +126,14 @@ private void addReposToDb(List<GitHubRepo> repoList){
         return mOwnerDao.getOwnerDetails();
     }
 
+    public Owner getOwnerDb(){
+        return mOwnerDao.getOwnerDetails().getValue();
+    }
     public LiveData<List<GitHubRepo>> getReposFromDb(){
         return mOwnerDao.getRepos();
+    }
+
+    public LiveData<List<GitHubRepo>> getCreateRepos(){
+        return mOwnerDao.getReposByCreatedDate();
     }
 }

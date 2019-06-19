@@ -6,11 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -81,11 +84,16 @@ public class UserFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
-
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            owner = bundle.getParcelable(OWNER_DATA);
-            authHeader = bundle.getString(AUTHHEADER);
+        setHasOptionsMenu(true);
+        if(savedInstanceState != null){
+            owner = savedInstanceState.getParcelable(OWNER_DATA);
+            authHeader = savedInstanceState.getString(AUTHHEADER);
+        }else {
+            Bundle bundle = getArguments();
+            if (bundle != null) {
+                owner = bundle.getParcelable(OWNER_DATA);
+                authHeader = bundle.getString(AUTHHEADER);
+            }
         }
         displayUserInfo();
         return view;
@@ -150,4 +158,13 @@ public class UserFragment extends Fragment {
        String time = oldFormat.substring(11,16);
        return date + "  " + time;
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(OWNER_DATA, owner);
+        outState.putString(AUTHHEADER, authHeader);
+    }
+
+
 }

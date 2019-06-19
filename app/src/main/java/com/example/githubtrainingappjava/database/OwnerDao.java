@@ -23,6 +23,9 @@ public abstract class OwnerDao {
     @Query("SELECT * FROM owner_table")
     public abstract LiveData<Owner> getOwnerDetails();
 
+    @Query("SELECT * FROM owner_table")
+    public abstract Owner getOwner();
+
     @Query("SELECT * FROM gitHubRepo_table")
     public abstract LiveData<List<GitHubRepo>> getRepos();
 
@@ -32,5 +35,7 @@ public abstract class OwnerDao {
     @Query("DELETE FROM gitHubRepo_table")
     public abstract void deleteRepos();
 
+    @Query("SELECT * FROM gitHubRepo_table ORDER BY createdAt ASC")
+    public abstract LiveData<List<GitHubRepo>> getReposByCreatedDate();
 
 }
