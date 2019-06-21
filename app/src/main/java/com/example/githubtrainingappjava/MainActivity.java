@@ -137,10 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        int id = menuItem.getItemId();
-        if(id == R.id.created_action){
-            Toast.makeText(MainActivity.this, "merge", Toast.LENGTH_SHORT).show();
-        }
+
 //        switch (id) {
 //            case R.id.created:
 //                Toast.makeText(this, "merge", Toast.LENGTH_SHORT).show();

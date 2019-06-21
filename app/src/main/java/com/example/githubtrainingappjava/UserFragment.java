@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -47,7 +49,7 @@ import static com.example.githubtrainingappjava.LoginActivity.OWNER_DATA;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserFragment extends Fragment {
+public class UserFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
     @BindView(R.id.avatar)
     ImageView ownerAvatar;
     @BindView(R.id.bio_text_view)
@@ -71,12 +73,17 @@ public class UserFragment extends Fragment {
     private Owner owner;
     private String authHeader;
     public static final String REPOSLIST = "reposList";
-
+    private AppRoomDatabase appRoomDatabase;
+    private AppExecutors appExecutors;
+    private ApiInterface apiInterface;
+    private Repository repository;
+    private OwnerViewModelFactory ownerViewModelFactory;
+    private OwnerViewModel ownerViewModel;
+    private NavigationView navigationView;
 
     public UserFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,6 +102,14 @@ public class UserFragment extends Fragment {
                 authHeader = bundle.getString(AUTHHEADER);
             }
         }
+
+        appRoomDatabase = AppRoomDatabase.getsInstance(getContext());
+        appExecutors =AppExecutors.getInstance();
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        repository = Repository.getsInstance(appExecutors,appRoomDatabase,
+                appRoomDatabase.ownerDao(), apiInterface);
+        ownerViewModelFactory = new OwnerViewModelFactory(repository,authHeader);
+        ownerViewModel = ViewModelProviders.of(this, ownerViewModelFactory).get(OwnerViewModel.class);
         displayUserInfo();
         return view;
     }
@@ -131,13 +146,7 @@ public class UserFragment extends Fragment {
     }
 
     private void loadRepos() {
-        AppRoomDatabase appRoomDatabase = AppRoomDatabase.getsInstance(getContext());
-        AppExecutors appExecutors =AppExecutors.getInstance();
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Repository repository = Repository.getsInstance(appExecutors,appRoomDatabase,
-                appRoomDatabase.ownerDao(), apiInterface);
-        OwnerViewModelFactory ownerViewModelFactory = new OwnerViewModelFactory(repository,authHeader);
-        OwnerViewModel ownerViewModel = ViewModelProviders.of(this, ownerViewModelFactory).get(OwnerViewModel.class);
+
         ownerViewModel.getReposLiveData().observe(this, gitHubRepos -> {
             if(gitHubRepos != null & gitHubRepos.size() != 0) {
                 Bundle bundle = new Bundle();
@@ -167,4 +176,14 @@ public class UserFragment extends Fragment {
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        if (id == R.id.created_action) {
+           Toast.makeText(getContext(), "merge?", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return true;
+
+    }
 }

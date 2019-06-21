@@ -48,6 +48,12 @@ public class LoginActivity extends AppCompatActivity {
     private String sharedPrefFile;
     private SharedPreferences mPreferences;
     private Owner mOwner;
+    private AppRoomDatabase appRoomDatabase;
+    private AppExecutors appExecutors;
+    private ApiInterface apiInterface;
+    private Repository repository;
+    private OwnerViewModelFactory ownerViewModelFactory;
+    private OwnerViewModel ownerViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,11 @@ public class LoginActivity extends AppCompatActivity {
             usernameEditText.setText(username);
             passwordEditText.setText(password);
         }
+        appRoomDatabase = AppRoomDatabase.getsInstance(this);
+        appExecutors =AppExecutors.getInstance();
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        repository = Repository.getsInstance(appExecutors,appRoomDatabase,
+                appRoomDatabase.ownerDao(), apiInterface);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,9 +86,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     private void loadUser() {
-        AppRoomDatabase appRoomDatabase = AppRoomDatabase.getsInstance(this);
-       AppExecutors appExecutors =AppExecutors.getInstance();
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
         // username = usernameEditText.getText().toString();
         username = "lavinia.dragunoi@yahoo.ro";
         //  password = passwordEditText.getText().toString();
@@ -85,10 +94,8 @@ public class LoginActivity extends AppCompatActivity {
 
         String base = username + ":" + password;
         final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
-        Repository repository = Repository.getsInstance(appExecutors,appRoomDatabase,
-                appRoomDatabase.ownerDao(), apiInterface);
-        OwnerViewModelFactory ownerViewModelFactory = new OwnerViewModelFactory(repository,authHeader);
-        OwnerViewModel ownerViewModel = ViewModelProviders.of(this, ownerViewModelFactory).get(OwnerViewModel.class);
+        ownerViewModelFactory = new OwnerViewModelFactory(repository,authHeader);
+        ownerViewModel = ViewModelProviders.of(this, ownerViewModelFactory).get(OwnerViewModel.class);
 
         ownerViewModel.getOwnerLiveData().observe(this, owner -> {
             if( owner != null){
