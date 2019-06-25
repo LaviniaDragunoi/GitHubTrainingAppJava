@@ -7,6 +7,5 @@
         <item name="android:layout_weight">1</item>
         <item name="android:elevation">@dimen/twelve_dp</item>
         <item name="android:focusableInTouchMode">true</item>
-        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>

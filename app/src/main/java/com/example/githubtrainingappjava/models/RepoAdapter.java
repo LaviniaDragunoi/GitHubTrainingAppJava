@@ -41,13 +41,31 @@ public RepoAdapter(Context context, List<GitHubRepo> gitHubRepos){
 
     holder.repoName.setText(repo.getName());
     if(repo.getPrivate()) {
-        holder.repoPrivacy.setText("Private");
+        holder.repoPrivacy.setText(context.getString(R.string.private_title));
     }else {
-        holder.repoPrivacy.setText("Public");
+        holder.repoPrivacy.setText(context.getString(R.string.public_title));
     }
     holder.repoCreatedAt.setText(UserFragment.formatDate(repo.getCreatedAt()));
     holder.repoUpdatedAt.setText(UserFragment.formatDate(repo.getUpdatedAt()));
+    holder.pushedDate.setText(UserFragment.formatDate(repo.getPushedAt()));
+    holder.repoFullName.setText(repo.getFullName());
+    holder.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(holder.pushedDate.getVisibility() == View.GONE) {
+                holder.fullNameTitle.setVisibility(View.VISIBLE);
+                holder.repoFullName.setVisibility(View.VISIBLE);
+                holder.pushedTitle.setVisibility(View.VISIBLE);
+                holder.pushedDate.setVisibility(View.VISIBLE);
+            }else {
+                holder.fullNameTitle.setVisibility(View.GONE);
+                holder.repoFullName.setVisibility(View.GONE);
+                holder.pushedTitle.setVisibility(View.GONE);
+                holder.pushedDate.setVisibility(View.GONE);
+            }
 
+        }
+    });
     }
 
     @Override
@@ -64,7 +82,14 @@ public RepoAdapter(Context context, List<GitHubRepo> gitHubRepos){
     TextView repoCreatedAt;
     @BindView(R.id.repo_updated)
     TextView repoUpdatedAt;
-
+    @BindView(R.id.pushed_title)
+    TextView pushedTitle;
+    @BindView(R.id.repo_pushed)
+    TextView pushedDate;
+    @BindView(R.id.repo_full_name)
+    TextView repoFullName;
+    @BindView(R.id.repo_full_name_title)
+    TextView fullNameTitle;
         public RepoViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

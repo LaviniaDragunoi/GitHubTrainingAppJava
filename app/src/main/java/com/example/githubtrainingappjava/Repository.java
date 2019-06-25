@@ -136,4 +136,21 @@ private void addReposToDb(List<GitHubRepo> repoList){
     public LiveData<List<GitHubRepo>> getCreateRepos(){
         return mOwnerDao.getReposByCreatedDate();
     }
+
+    public LiveData<List<GitHubRepo>> getUpdateRepos() {
+        return mOwnerDao.getReposByUpdatedDate();
+    }
+
+    public LiveData<List<GitHubRepo>> getReposPushedDate() {
+        return mOwnerDao.getReposByPushedDate();
+    }
+
+    public LiveData<List<GitHubRepo>> getSortedByName() {
+        return mOwnerDao.getRepos();
+    }
+
+    public LiveData<List<GitHubRepo>> getPersonalRepos() {
+
+        return mOwnerDao.getOwnerRepo(false);
+    }
 }

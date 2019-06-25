@@ -44,4 +44,20 @@ public OwnerViewModel (Repository repository, String auth){
     public Owner getOwner(){
     return mRepository.getOwnerDb();
     }
+
+    public LiveData<List<GitHubRepo>> getReposByUpdatedDate() {
+        return mRepository.getUpdateRepos();
+    }
+
+    public LiveData<List<GitHubRepo>> getReposByPushedDate() {
+    return mRepository.getReposPushedDate();
+    }
+
+    public LiveData<List<GitHubRepo>> getReposByName() {
+        return mRepository.getSortedByName();
+    }
+
+    public LiveData<List<GitHubRepo>> getOwnedRepos() {
+    return mRepository.getPersonalRepos();
+    }
 }

@@ -26,7 +26,7 @@ public abstract class OwnerDao {
     @Query("SELECT * FROM owner_table")
     public abstract Owner getOwner();
 
-    @Query("SELECT * FROM gitHubRepo_table")
+    @Query("SELECT * FROM gitHubRepo_table  ORDER BY fullName ASC")
     public abstract LiveData<List<GitHubRepo>> getRepos();
 
     @Query("DELETE FROM owner_table")
@@ -38,4 +38,12 @@ public abstract class OwnerDao {
     @Query("SELECT * FROM gitHubRepo_table ORDER BY createdAt ASC")
     public abstract LiveData<List<GitHubRepo>> getReposByCreatedDate();
 
+    @Query("SELECT * FROM gitHubRepo_table ORDER BY updatedAt ASC")
+    public abstract LiveData<List<GitHubRepo>> getReposByUpdatedDate();
+
+    @Query("SELECT * FROM gitHubRepo_table ORDER BY pushedAt DESC")
+    public abstract LiveData<List<GitHubRepo>> getReposByPushedDate();
+
+    @Query("SELECT * FROM gitHubRepo_table WHERE fork = :value")
+    public abstract LiveData<List<GitHubRepo>> getOwnerRepo(boolean value);
 }

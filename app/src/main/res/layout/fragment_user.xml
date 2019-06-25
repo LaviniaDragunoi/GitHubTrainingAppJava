@@ -97,8 +97,7 @@
                 android:drawableEnd="@drawable/ic_mail"
                 android:text="@string/contact_by_email"
                 android:focusableInTouchMode="true"
-                tools:targetApi="lollipop"
-                android:background="@android:color/transparent"/>
+                tools:targetApi="lollipop"/>
 
         </LinearLayout>
 

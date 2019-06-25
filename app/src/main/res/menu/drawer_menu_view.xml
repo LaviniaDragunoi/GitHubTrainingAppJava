@@ -5,18 +5,23 @@
         android:id="@+id/sort_by"
         android:title="@string/sort_by_title"/>
     <group>
+
         <item
             android:id="@+id/created_action"
-            android:title="@string/created_date" />
+            android:title="@string/created_date"
+            android:checkable="true"/>
         <item
             android:id="@+id/updated"
-            android:title="@string/updated_date" />
+            android:title="@string/updated_date"
+            android:checkable="true"/>
         <item
             android:id="@+id/pushed"
-            android:title="@string/pushed_date" />
+            android:title="@string/pushed_date"
+            android:checkable="true"/>
         <item
             android:id="@+id/full_name"
-            android:title="@string/full_name" />
+            android:title="@string/full_name"
+            android:checkable="true"/>
     </group>
 
     <item

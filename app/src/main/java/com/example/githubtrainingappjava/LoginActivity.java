@@ -2,8 +2,11 @@ package com.example.githubtrainingappjava;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.loginButton)
     Button loginButton;
     @BindView(R.id.githubOctocatIcon)
-    ImageView githubIcon;;
+    ImageView githubIcon;
     private String username;
     private String password;
     private String sharedPrefFile;
@@ -85,6 +88,20 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
+    /**
+     * This is a method that will verify if the device has internet connection
+     * @return true if exists connection and false otherwise
+     */
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        boolean hasConnection = false;
+        if (networkInfo != null && networkInfo.isConnected()) hasConnection = true;
+        return hasConnection;
+    }
+
     private void loadUser() {
 
         // username = usernameEditText.getText().toString();
