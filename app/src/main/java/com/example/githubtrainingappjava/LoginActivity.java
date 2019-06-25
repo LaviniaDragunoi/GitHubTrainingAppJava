@@ -104,10 +104,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loadUser() {
 
-        // username = usernameEditText.getText().toString();
-        username = "lavinia.dragunoi@yahoo.ro";
-        //  password = passwordEditText.getText().toString();
-        password = "!Laurentiu35";
+       username = usernameEditText.getText().toString();
+        password = passwordEditText.getText().toString();
 
         String base = username + ":" + password;
         final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
