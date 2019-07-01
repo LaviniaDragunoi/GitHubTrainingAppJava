@@ -3,6 +3,7 @@ package com.example.githubtrainingappjava;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
@@ -35,6 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.example.githubtrainingappjava.LoginActivity.AUTHHEADER;
+import static com.example.githubtrainingappjava.LoginActivity.IS_LOGED;
 import static com.example.githubtrainingappjava.LoginActivity.OWNER_DATA;
 import static com.example.githubtrainingappjava.UserFragment.REPOSLIST;
 
@@ -54,6 +56,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private FragmentManager fragmentManager;
+    private String sharedPrefFile;
+    private SharedPreferences mPreferences;
+    private AppRoomDatabase appRoomDatabase;
+    private Repository mRepository;
+    private ApiInterface apiInterface;
+    private OwnerViewModelFactory ownerViewModelFactory;
 
 
     @Override
@@ -62,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        sharedPrefFile = "com.example.githubtrainingappjava";
+        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         if(drawerLayout != null){
@@ -78,16 +88,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             authHeader = intent.getStringExtra(AUTHHEADER);
 
         }
-        AppRoomDatabase appRoomDatabase = AppRoomDatabase.getsInstance(this);
+        appRoomDatabase = AppRoomDatabase.getsInstance(this);
         mAppExcutors = AppExecutors.getInstance();
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Repository mRepository = Repository.getsInstance(mAppExcutors, appRoomDatabase,
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        mRepository = Repository.getsInstance(mAppExcutors, appRoomDatabase,
                 appRoomDatabase.ownerDao(),apiInterface);
-        OwnerViewModelFactory ownerViewModelFactory = new OwnerViewModelFactory(mRepository, authHeader);
+        ownerViewModelFactory = new OwnerViewModelFactory(mRepository, authHeader);
         mViewModel = ViewModelProviders.of(this, ownerViewModelFactory).get(OwnerViewModel.class);
 
         setTitle(owner.getName());
 
+        if(savedInstanceState == null) {
             UserFragment userFragment = new UserFragment();
             fragmentManager = getSupportFragmentManager();
             Bundle bundle = new Bundle();
@@ -97,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentManager.beginTransaction()
                     .add(R.id.main_container, userFragment)
                     .commit();
-
+        }
 
     }
 
@@ -123,6 +134,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void logout() {
         mAppExcutors.diskIO().execute(() -> {
             mViewModel.deleteDatabase();
+            SharedPreferences.Editor preferancesEditor = mPreferences.edit();
+            preferancesEditor.putBoolean(IS_LOGED, false);
+            preferancesEditor.putString(AUTHHEADER, null);
+            preferancesEditor.apply();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         });

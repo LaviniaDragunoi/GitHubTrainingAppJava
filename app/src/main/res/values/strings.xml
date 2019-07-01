@@ -40,4 +40,5 @@
     <string name="private_title">Private</string>
     <string name="public_title">Public</string>
     <string name="repository_s_full_name">Full Name</string>
+    <string name="error_string">There seems to be a connectivity problem, please try again!</string>
 </resources>

@@ -27,6 +27,7 @@ import com.example.githubtrainingappjava.database.AppRoomDatabase;
 import com.example.githubtrainingappjava.models.Owner;
 
 
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String AUTHHEADER = "authheather" ;
     private static final String USERNAME = "username";
     private static final String USERS_PASSWORD = "password";
-    private static final String IS_LOGED = "isLoged";
+    public static final String IS_LOGED = "isLoged";
     @BindView(R.id.editTextUsername)
     EditText usernameEditText;
     @BindView(R.id.editTextpassword)
@@ -46,6 +47,8 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     @BindView(R.id.githubOctocatIcon)
     ImageView githubIcon;
+    @BindView(R.id.error_connection)
+    TextView errorMessage;
     private String username;
     private String password;
     private String sharedPrefFile;
@@ -57,13 +60,19 @@ public class LoginActivity extends AppCompatActivity {
     private Repository repository;
     private OwnerViewModelFactory ownerViewModelFactory;
     private OwnerViewModel ownerViewModel;
+    private String mAutentication;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
+        appRoomDatabase = AppRoomDatabase.getsInstance(this);
+        appExecutors =AppExecutors.getInstance();
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        repository = Repository.getsInstance(appExecutors,appRoomDatabase,
+                appRoomDatabase.ownerDao(), apiInterface);
          sharedPrefFile = "com.example.githubtrainingappjava";
          mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
 
@@ -73,19 +82,29 @@ public class LoginActivity extends AppCompatActivity {
             usernameEditText.setText(username);
             passwordEditText.setText(password);
         }
-        appRoomDatabase = AppRoomDatabase.getsInstance(this);
-        appExecutors =AppExecutors.getInstance();
-        apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        repository = Repository.getsInstance(appExecutors,appRoomDatabase,
-                appRoomDatabase.ownerDao(), apiInterface);
+               if(mPreferences.getBoolean(IS_LOGED, false)){
+                   mAutentication = mPreferences.getString(AUTHHEADER, null);
+                   errorMessage.setVisibility(View.GONE);
+                   loadUser(mAutentication);
+                }
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadUser();
+                   loginButton.setOnClickListener((View v) -> {
+                       if(isConnected()) {
+                           errorMessage.setVisibility(View.GONE);
+                           username = usernameEditText.getText().toString();
+                           password = passwordEditText.getText().toString();
+                           final String authHeader = getAuthHeader(username, password);
+                           SharedPreferences.Editor preferancesEditor = mPreferences.edit();
+                           preferancesEditor.putBoolean(IS_LOGED, true);
+                           preferancesEditor.putString(AUTHHEADER, authHeader);
+                           preferancesEditor.apply();
+                           loadUser(authHeader);
+                       }else {
+                           errorMessage.setVisibility(View.VISIBLE);
+                       }
 
-            }
-        });
+                   });
+
 
     }
 
@@ -101,23 +120,13 @@ public class LoginActivity extends AppCompatActivity {
         if (networkInfo != null && networkInfo.isConnected()) hasConnection = true;
         return hasConnection;
     }
-
-    private void loadUser() {
-
-       username = usernameEditText.getText().toString();
-        password = passwordEditText.getText().toString();
-
-        String base = username + ":" + password;
-        final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
+     public void loadUser(String authHeader) {
         ownerViewModelFactory = new OwnerViewModelFactory(repository,authHeader);
         ownerViewModel = ViewModelProviders.of(this, ownerViewModelFactory).get(OwnerViewModel.class);
 
         ownerViewModel.getOwnerLiveData().observe(this, owner -> {
             if( owner != null){
-                SharedPreferences.Editor preferancesEditor = mPreferences.edit();
-                preferancesEditor.putBoolean(IS_LOGED, true);
-                preferancesEditor.putString(AUTHHEADER, authHeader);
-                preferancesEditor.apply();
+
                 Intent intent =  new Intent (LoginActivity.this, MainActivity.class);
                   intent.putExtra(OWNER_DATA, owner);
                    intent.putExtra(AUTHHEADER, authHeader);
@@ -128,6 +137,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private String getAuthHeader(String username, String password){
+        String base = username + ":" + password;
+        return "Basic " + Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
+
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

@@ -96,7 +96,7 @@ public class Repository {
         if(ownerLiveData != null){
 
             mAppExecutors.networkIO().execute(() ->{
-                deleteOwnerFromDb();
+
                 mOwnerDao.insertOwner(ownerLiveData);
 
             });
@@ -106,7 +106,7 @@ public class Repository {
 private void addReposToDb(List<GitHubRepo> repoList){
         if(repoList != null){
             mAppExecutors.networkIO().execute(() ->{
-                deleteRepoFromDb();
+
                 mOwnerDao.insertRepoList(repoList);
 
             });
