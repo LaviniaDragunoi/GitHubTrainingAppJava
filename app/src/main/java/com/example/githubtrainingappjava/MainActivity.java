@@ -1,23 +1,19 @@
 package com.example.githubtrainingappjava;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.githubtrainingappjava.ViewModel.OwnerViewModel;
 import com.example.githubtrainingappjava.ViewModel.OwnerViewModelFactory;
@@ -29,7 +25,6 @@ import com.example.githubtrainingappjava.models.Owner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +36,7 @@ import static com.example.githubtrainingappjava.UserFragment.REPOSLIST;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
+    public static final String IS_LOGGED = "is_logged";
     private Owner owner;
     private String authHeader;
     private AppExecutors mAppExcutors;
@@ -54,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private FragmentManager fragmentManager;
+    private String sharedPrefFile;
+    private SharedPreferences mPreferences;
 
 
     @Override
@@ -62,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        sharedPrefFile = "com.example.githubtrainingappjava";
+        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         if(drawerLayout != null){
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setTitle(owner.getName());
 
+        if(savedInstanceState == null) {
             UserFragment userFragment = new UserFragment();
             fragmentManager = getSupportFragmentManager();
             Bundle bundle = new Bundle();
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentManager.beginTransaction()
                     .add(R.id.main_container, userFragment)
                     .commit();
-
+        }
 
     }
 
@@ -123,6 +124,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void logout() {
         mAppExcutors.diskIO().execute(() -> {
             mViewModel.deleteDatabase();
+            SharedPreferences.Editor preferancesEditor = mPreferences.edit();
+            preferancesEditor.putBoolean(IS_LOGGED, false);
+            preferancesEditor.putString(AUTHHEADER, null);
+            preferancesEditor.apply();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         });

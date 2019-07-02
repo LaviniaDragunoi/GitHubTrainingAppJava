@@ -12,7 +12,10 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
     <FrameLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
@@ -21,7 +24,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:id="@+id/repos_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
+</LinearLayout>
 <!--Contents of the drawer-->
 <android.support.design.widget.NavigationView
     android:id="@+id/nav_view"

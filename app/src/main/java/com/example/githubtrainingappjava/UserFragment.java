@@ -79,7 +79,7 @@ public class UserFragment extends Fragment implements NavigationView.OnNavigatio
     private Repository repository;
     private OwnerViewModelFactory ownerViewModelFactory;
     private OwnerViewModel ownerViewModel;
-    private NavigationView navigationView;
+
 
     public UserFragment() {
         // Required empty public constructor
