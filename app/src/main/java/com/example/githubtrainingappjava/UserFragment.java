@@ -1,11 +1,21 @@
 package com.example.githubtrainingappjava;
 
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,12 +23,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.githubtrainingappjava.ViewModel.OwnerViewModel;
+import com.example.githubtrainingappjava.ViewModel.OwnerViewModelFactory;
 import com.example.githubtrainingappjava.data.ApiClient;
 import com.example.githubtrainingappjava.data.ApiInterface;
+import com.example.githubtrainingappjava.database.AppRoomDatabase;
 import com.example.githubtrainingappjava.models.GitHubRepo;
 import com.example.githubtrainingappjava.models.Owner;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,7 +49,7 @@ import static com.example.githubtrainingappjava.LoginActivity.OWNER_DATA;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserFragment extends Fragment {
+public class UserFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
     @BindView(R.id.avatar)
     ImageView ownerAvatar;
     @BindView(R.id.bio_text_view)
@@ -57,11 +72,18 @@ public class UserFragment extends Fragment {
     Button emailButton;
     private Owner owner;
     private String authHeader;
+    public static final String REPOSLIST = "reposList";
+    private AppRoomDatabase appRoomDatabase;
+    private AppExecutors appExecutors;
+    private ApiInterface apiInterface;
+    private Repository repository;
+    private OwnerViewModelFactory ownerViewModelFactory;
+    private OwnerViewModel ownerViewModel;
+
 
     public UserFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,12 +91,25 @@ public class UserFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         ButterKnife.bind(this, view);
-
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            owner = bundle.getParcelable(OWNER_DATA);
-            authHeader = bundle.getString(AUTHHEADER);
+        setHasOptionsMenu(true);
+        if(savedInstanceState != null){
+            owner = savedInstanceState.getParcelable(OWNER_DATA);
+            authHeader = savedInstanceState.getString(AUTHHEADER);
+        }else {
+            Bundle bundle = getArguments();
+            if (bundle != null) {
+                owner = bundle.getParcelable(OWNER_DATA);
+                authHeader = bundle.getString(AUTHHEADER);
+            }
         }
+
+        appRoomDatabase = AppRoomDatabase.getsInstance(getContext());
+        appExecutors =AppExecutors.getInstance();
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        repository = Repository.getsInstance(appExecutors,appRoomDatabase,
+                appRoomDatabase.ownerDao(), apiInterface);
+        ownerViewModelFactory = new OwnerViewModelFactory(repository,authHeader);
+        ownerViewModel = ViewModelProviders.of(this, ownerViewModelFactory).get(OwnerViewModel.class);
         displayUserInfo();
         return view;
     }
@@ -84,8 +119,8 @@ public class UserFragment extends Fragment {
         bioTV.setText(owner.getBio());
         locationTv.setText(owner.getLocation());
         emailTV.setText(owner.getEmail());
-        createdTV.setText(owner.getCreatedAt());
-        updateTV.setText(owner.getUpdatedAt());
+        createdTV.setText(formatDate(owner.getCreatedAt()));
+        updateTV.setText(formatDate(owner.getUpdatedAt()));
         publicRepoTV.setText(owner.getPublicRepos().toString());
         privateRepoTV.setText(owner.getTotalPrivateRepos().toString());
         openRepoButton.setOnClickListener(new View.OnClickListener() {
@@ -111,20 +146,44 @@ public class UserFragment extends Fragment {
     }
 
     private void loadRepos() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<GitHubRepo>> call = apiInterface.listRepos(authHeader);
-        call.enqueue(new Callback<List<GitHubRepo>>() {
-            @Override
-            public void onResponse(Call<List<GitHubRepo>> call, Response<List<GitHubRepo>> response) {
 
-                Toast.makeText(getContext(), "It is a succes", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<List<GitHubRepo>> call, Throwable t) {
-                Toast.makeText(getContext(), "It is not a succes", Toast.LENGTH_SHORT).show();
+        ownerViewModel.getReposLiveData().observe(this, gitHubRepos -> {
+            if(gitHubRepos != null & gitHubRepos.size() != 0) {
+                Bundle bundle = new Bundle();
+                ReposFragment reposFragment = new ReposFragment();
+                bundle.putParcelableArrayList(REPOSLIST, new ArrayList<>(gitHubRepos));
+                reposFragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_container, reposFragment)
+                        .commit();
             }
         });
+
     }
 
+
+    public static String formatDate(String oldFormat){
+       String date = oldFormat.substring(0,10);
+       String time = oldFormat.substring(11,16);
+       return date + "  " + time;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(OWNER_DATA, owner);
+        outState.putString(AUTHHEADER, authHeader);
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        if (id == R.id.created_action) {
+           Toast.makeText(getContext(), "merge?", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return true;
+
+    }
 }

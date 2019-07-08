@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+        android:layout_width="@dimen/fourty_dp"
+        android:layout_height="40dp"
+        android:layout_gravity="start"
+        android:layout_marginStart="@dimen/twenty_dp"
+        android:layout_marginTop="@dimen/fourty_dp"
+        android:src="@drawable/githuboctocat"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/eight_dp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:text="@string/github_settings"/>
+</LinearLayout>

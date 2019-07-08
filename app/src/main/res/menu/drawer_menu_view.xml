@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/sort_by"
+        android:title="@string/sort_by_title"/>
+    <group>
+
+        <item
+            android:id="@+id/created_action"
+            android:title="@string/created_date"
+            android:checkable="true"/>
+        <item
+            android:id="@+id/updated"
+            android:title="@string/updated_date"
+            android:checkable="true"/>
+        <item
+            android:id="@+id/pushed"
+            android:title="@string/pushed_date"
+            android:checkable="true"/>
+        <item
+            android:id="@+id/full_name"
+            android:title="@string/full_name"
+            android:checkable="true"/>
+    </group>
+
+    <item
+        android:id="@+id/affiliation"
+        android:title="@string/affiliation_title" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/owner"
+            android:title="@string/owner" />
+        <item
+            android:id="@+id/collaborator"
+            android:title="@string/collaborator" />
+        <item
+            android:id="@+id/organization"
+            android:title="@string/org_member" />
+
+    </group>
+
+</menu>

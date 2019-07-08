@@ -40,64 +40,46 @@
             style="@style/TextTitleStyle"/>
         <TextView
             android:id="@+id/location_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            tools:text="Bucharest"
-            android:textSize="18sp"/>
+            style="@style/TextStyle"
+            tools:text="@string/locationString"/>
 
         <TextView
             style="@style/TextTitleStyle"
             android:text="@string/emailTitle"/>
         <TextView
             android:id="@+id/email_text-view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            tools:text="blabla@blabla.com"
-            android:textSize="18sp"/>
+            style="@style/TextStyle"
+            tools:text="@string/emailString"/>
 
         <TextView
             style="@style/TextTitleStyle"
             android:text="@string/createdTitle"/>
         <TextView
             android:id="@+id/created_date_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            tools:text="date"
-            android:textSize="18sp"/>
+            style="@style/TextStyle"
+            tools:text="@string/dateString"/>
         <TextView
             style="@style/TextTitleStyle"
             android:text="@string/updateTitle"/>
         <TextView
             android:id="@+id/update_date_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            tools:text="date"
-            android:textSize="18sp"/>
+            style="@style/TextStyle"
+            tools:text="@string/dateString"/>
         <TextView
             style="@style/TextTitleStyle"
             android:text="@string/publicReposTitle"/>
         <TextView
             android:id="@+id/public_repo_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            tools:text="12"
-            android:textSize="18sp"/>
+            style="@style/TextStyle"
+            tools:text="@string/numberString"/>
 
         <TextView
             style="@style/TextTitleStyle"
             android:text="@string/privateReposTitle"/>
         <TextView
             android:id="@+id/private_repo_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            tools:text="12"
-            android:textSize="18sp"/>
+            style="@style/TextStyle"
+            tools:text="@string/numberString"/>
 
         <LinearLayout
             style="@style/WMatchHWrapStyle">
@@ -106,17 +88,16 @@
                 android:id="@+id/open_repo_button"
                 android:text="@string/viewRepositories"
                 tools:targetApi="lollipop"
-                android:drawableLeft="@drawable/ic_archive"
+                android:drawableStart="@drawable/ic_archive"
                 style="@style/BottomButtonStyle" />
 
             <Button
                 android:id="@+id/email_button"
                 style="@style/BottomButtonStyle"
-                android:drawableRight="@drawable/ic_mail"
+                android:drawableEnd="@drawable/ic_mail"
                 android:text="@string/contact_by_email"
                 android:focusableInTouchMode="true"
-                tools:targetApi="lollipop"
-                android:background="@android:color/transparent"/>
+                tools:targetApi="lollipop"/>
 
         </LinearLayout>
 
